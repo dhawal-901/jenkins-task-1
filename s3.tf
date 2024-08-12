@@ -36,7 +36,7 @@ resource "aws_s3_object" "my_s3_object" {
   source       = "static/index.html"
   content_type = "text/html"
   acl          = "public-read"
-
+etag   = filemd5("./static/index.html")
 depends_on = [ aws_s3_bucket_acl.bucket_acl ]
 }
 
