@@ -29,6 +29,7 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
   bucket = aws_s3_bucket.my_bucket.id
   acl    = "public-read"
 }
+
 resource "aws_s3_bucket_policy" "my_bucket_policy" {
   bucket = aws_s3_bucket.my_bucket.id
   policy = <<EOF
@@ -50,5 +51,5 @@ resource "aws_s3_object" "object" {
   bucket = aws_s3_bucket.my_bucket.id
   key    = "index.html"
   source = "./static/index.html"
-
+etag = filemd("./static/index.html")
 }

@@ -8,7 +8,7 @@ terraform {
   }
 
   backend "s3" {
-    bucket  = "tf-bucket00"
+    bucket  = "tf-bucket000000"
     encrypt = true
     key     = "Jenkins/task-1/terraform.tfstate"
     region  = "ap-south-1"
