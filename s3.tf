@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "my_bucket" {
-  bucket = "jenkins-bucket-0000000000"
+  bucket = "jenkins-bucket-11111111"
   tags = {
     Name = "my_bucket_Jenkins"
   }
@@ -30,26 +30,48 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
   acl    = "public-read"
 }
 
-resource "aws_s3_bucket_policy" "my_bucket_policy" {
-  bucket = aws_s3_bucket.my_bucket.id
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Principal": "*",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::${aws_s3_bucket.my_bucket.id}/*"
-    }
-  ]
-}
-EOF
+resource "aws_s3_object" "my_s3_object" {
+  bucket       = aws_s3_bucket.my_bucket.id
+  key          = "index.html"
+  source       = "static/index.html"
+  content_type = "text/html"
+  acl          = "public-read"
+
+depends_on = [ aws_s3_bucket_acl.bucket_acl ]
 }
 
-resource "aws_s3_object" "object" {
+
+resource "aws_s3_bucket_website_configuration" "web_config" {
   bucket = aws_s3_bucket.my_bucket.id
-  key    = "index.html"
-  source = "./static/index.html"
-  etag   = filemd5("./static/index.html")
+
+  index_document {
+    suffix = "index.html"
+  }
+  depends_on = [ aws_s3_bucket.my_bucket ]
 }
+
+
+
+# resource "aws_s3_bucket_policy" "my_bucket_policy" {
+#   bucket = aws_s3_bucket.my_bucket.id
+#   policy = <<EOF
+# {
+#   "Version": "2012-10-17",
+#   "Statement": [
+#     {
+#       "Effect": "Allow",
+#       "Principal": "*",
+#       "Action": "s3:GetObject",
+#       "Resource": "arn:aws:s3:::${aws_s3_bucket.my_bucket.id}/*"
+#     }
+#   ]
+# }
+# EOF
+# }
+
+# resource "aws_s3_object" "object" {
+#   bucket = aws_s3_bucket.my_bucket.id
+#   key    = "index.html"
+#   source = "./static/index.html"
+#   etag   = filemd5("./static/index.html")
+# }
