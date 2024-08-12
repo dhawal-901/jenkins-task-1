@@ -51,5 +51,5 @@ resource "aws_s3_object" "object" {
   bucket = aws_s3_bucket.my_bucket.id
   key    = "index.html"
   source = "./static/index.html"
-etag = filemd("./static/index.html")
+  etag   = filemd5("./static/index.html")
 }
