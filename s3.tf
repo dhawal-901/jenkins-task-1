@@ -33,10 +33,10 @@ resource "aws_s3_bucket_acl" "bucket_acl" {
 resource "aws_s3_object" "my_s3_object" {
   bucket       = aws_s3_bucket.my_bucket.id
   key          = "index.html"
-  source       = "static/index.html"
+  source       = "index.html"
   content_type = "text/html"
   acl          = "public-read"
-etag   = filemd5("./static/index.html")
+etag   = filemd5("./index.html")
 depends_on = [ aws_s3_bucket_acl.bucket_acl ]
 }
 
@@ -49,8 +49,6 @@ resource "aws_s3_bucket_website_configuration" "web_config" {
   }
   depends_on = [ aws_s3_bucket.my_bucket ]
 }
-
-
 
 # resource "aws_s3_bucket_policy" "my_bucket_policy" {
 #   bucket = aws_s3_bucket.my_bucket.id
